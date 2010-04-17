@@ -8,7 +8,7 @@ class NullRetrial extends Retrial
 
     /**
      * This method throws Retrial_FailureException while $this->_count is smaller than 100.
-     * If the count is greator than or equals to 100, returns true.
+     * If the count is greater than or equals to 100, returns true.
      */
     public function process()
     {
