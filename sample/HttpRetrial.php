@@ -14,13 +14,28 @@ class HttpRetrial extends Retrial
     public function process()
     {
         $result = @file_get_contents($this->_url);
-        echo "trial\n";
-        var_dump($result);
-        return $result === false ? false : true;
+        echo "trial: " . $this->_url . "\n";
+        echo $result . "\n";
+        if ($result === false) {
+            throw new Retrial_FailureException('Failed to get ' . $this->_url . '.');
+        }
+        return $result;
     }
 }
 
-$retrial = new HttpRetrial('http://example.com');
-$retrial->execute(3);
+try {
+    $retrial = new HttpRetrial('http://gist.github.com/raw/364324/1c27c8a609b4ddc1b09d71234148618c39388cdc/sample.js');
+    $retrial->execute(3);
+} catch (Retrial_FailureAllException $e) {
+}
+try {
 $retrialFail = new HttpRetrial('http://example.com/_______________');
 $retrialFail->execute(3);
+} catch (Retrial_FailureAllException $e) {
+    echo $e->getMessage() . "\n";
+    $failures = $e->getFailures()->getAll();
+    foreach ($failures as $failure)
+    {
+        echo $failure->getMessage() . "\n";
+    }
+}
