@@ -12,5 +12,5 @@ abstract class Retrial
         }
     }
 
-    abstract public function process();
+    abstract protected function process();
 }
