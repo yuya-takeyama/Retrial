@@ -1,6 +1,7 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 require_once 'NullRetrial.php';
+require_once 'RegExpRetrial.php';
 
 class ExceptionTest extends PHPUnit_Framework_TestCase
 {
@@ -35,5 +36,12 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
             return;
         }
         $this->fail();
+    }
+
+    public function testVariableArguments()
+    {
+        $retrial = new RegExpRetrial;
+        $this->assertTrue($retrial->execute('/bar/', 'foobarbaz'));
+        $this->assertFalse($retrial->execute('/hoge/', 'foobarbaz'));
     }
 }

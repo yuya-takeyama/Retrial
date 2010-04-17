@@ -12,10 +12,11 @@ abstract class Retrial
     public function execute()
     {
         $failures = new Retrial_Failures;
+        $args = func_get_args();
         for ($i = 0; $i < $this->_retrialCount; $i++)
         {
             try {
-                $result = $this->process();
+                $result = call_user_func_array(array($this, 'process'), $args);
                 return $result;
             } catch (Retrial_FailureException $e) {
                 $failures->push($e);
@@ -32,5 +33,8 @@ abstract class Retrial
         return $this;
     }
 
-    abstract protected function process();
+    protected function process()
+    {
+        throw new ErrorException('Retrial#process must be implemented.');
+    }
 }
