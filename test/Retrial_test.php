@@ -1,13 +1,13 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once 'HttpRetrial.php';
+require_once 'NullRetrial.php';
 
 class ExceptionTest extends PHPUnit_Framework_TestCase
 {
     public function testSuccess()
     {
-        $retrial = new HttpRetrial('http://example.com/');
-        $this->assertRegExp('/These domain names are reserved for use in documentation/', $retrial->setRetrialCount(3)->execute());
+        $retrial = new NullRetrial();
+        $this->assertTrue($retrial->setRetrialCount(100)->execute());
     }
 
     /**
@@ -15,18 +15,23 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
      */
     public function testFail()
     {
-        $retrial = new HttpRetrial('http://example.com/___');
-        $retrial->setRetrialCount(1)->execute();
+        $retrial = new NullRetrial;
+        $retrial->setRetrialCount(99)->execute();
     }
 
     public function testRetrial_FailureAllException()
     {
-        $retrial = new HttpRetrial('http://example.com/___');
+        $retrial = new NullRetrial;
         try {
-            $retrial->setRetrialCount(3)->execute();
+            $retrial->setRetrialCount(50)->execute();
         } catch (Retrial_FailureAllException $e) {
             $failures = $e->getFailures();
-            $this->assertEquals(3, count($failures->getAll()));
+            $failuresArray = $failures->getAll();
+            $this->assertEquals(50, count($failuresArray));
+            $this->assertEquals('50 is smaller than 100.', $failures->get()->getMessage());
+            $this->assertEquals('50 is smaller than 100.', $failures->get(-1)->getMessage());
+            $this->assertEquals('49 is smaller than 100.', $failures->get(-2)->getMessage());
+            $this->assertEquals('1 is smaller than 100.', $failures->get(0)->getMessage());
             return;
         }
         $this->fail();

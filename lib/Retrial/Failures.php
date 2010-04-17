@@ -16,7 +16,7 @@ class Retrial_Failures
     public function get($num = -1)
     {
         if ($num < 0) {
-            $num = count($this->_failures) - 1;
+            $num = count($this->_failures) + $num;
         }
         return $this->_failures[$num];
     }
