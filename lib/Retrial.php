@@ -7,10 +7,12 @@ abstract class Retrial
 {
     protected $_result;
 
-    public function execute($times = 1)
+    protected $_retrialCount = 1;
+
+    public function execute()
     {
         $failures = new Retrial_Failures;
-        for ($i = 0; $i < $times; $i++)
+        for ($i = 0; $i < $this->_retrialCount; $i++)
         {
             try {
                 $result = $this->process();
@@ -22,6 +24,12 @@ abstract class Retrial
         $e = new Retrial_FailureAllException('All of the trial has been a failure.');
         $e->setFailures($failures);
         throw $e;
+    }
+
+    public function setRetrialCount($count)
+    {
+        $this->_retrialCount = $count;
+        return $this;
     }
 
     abstract protected function process();

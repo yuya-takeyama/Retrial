@@ -24,13 +24,13 @@ class HttpRetrial extends Retrial
 }
 
 try {
-    $retrial = new HttpRetrial('http://gist.github.com/raw/364324/1c27c8a609b4ddc1b09d71234148618c39388cdc/sample.js');
-    $retrial->execute(3);
+    $retrial = new HttpRetrial('http://example.com/');
+    $retrial->setRetrialCount(3)->execute();
 } catch (Retrial_FailureAllException $e) {
 }
 try {
 $retrialFail = new HttpRetrial('http://example.com/_______________');
-$retrialFail->execute(3);
+$retrialFail->setRetrialCount(3)->execute();
 } catch (Retrial_FailureAllException $e) {
     echo $e->getMessage() . "\n";
     $failures = $e->getFailures()->getAll();
