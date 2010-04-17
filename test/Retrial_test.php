@@ -16,6 +16,19 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
     public function testFail()
     {
         $retrial = new HttpRetrial('http://example.com/___');
-        $retrial->setRetrialCount(3)->execute();
+        $retrial->setRetrialCount(1)->execute();
+    }
+
+    public function testRetrial_FailureAllException()
+    {
+        $retrial = new HttpRetrial('http://example.com/___');
+        try {
+            $retrial->setRetrialCount(3)->execute();
+        } catch (Retrial_FailureAllException $e) {
+            $failures = $e->getFailures();
+            $this->assertEquals(3, count($failures->getAll()));
+            return;
+        }
+        $this->fail();
     }
 }
