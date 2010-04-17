@@ -1,16 +1,16 @@
 <?php
 abstract class Retrial
 {
-    public function tries($times = 1)
+    public function execute($times = 1)
     {
         for ($i = 0; $i < $times; $i++)
         {
-            $result = $this->execute();
+            $result = $this->process();
             if ($result === true) {
                 break;
             }
         }
     }
 
-    abstract public function execute();
+    abstract public function process();
 }

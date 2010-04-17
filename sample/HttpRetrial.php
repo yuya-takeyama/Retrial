@@ -11,7 +11,7 @@ class HttpRetrial extends Retrial
         $this->_url = $url;
     }
 
-    public function execute()
+    public function process()
     {
         $result = @file_get_contents($this->_url);
         echo "trial\n";
@@ -21,6 +21,6 @@ class HttpRetrial extends Retrial
 }
 
 $retrial = new HttpRetrial('http://example.com');
-$retrial->tries(3);
+$retrial->execute(3);
 $retrialFail = new HttpRetrial('http://example.com/_______________');
-$retrialFail->tries(3);
+$retrialFail->execute(3);
