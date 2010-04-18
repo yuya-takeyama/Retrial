@@ -17,10 +17,10 @@ abstract class Retrial
     {
         $failures = new Retrial_Failures;
         $args = func_get_args();
-        // @TODO hook some processes
+        $this->initialize();
         for ($this->_trialCount = 1; $this->_trialCount <= $this->_maxTrial; $this->_trialCount++)
         {
-            // @TODO hook some processes
+            $this->before();
             try {
                 $this->_sleep();
                 $result = call_user_func_array(array($this, 'process'), $args);
@@ -29,12 +29,12 @@ abstract class Retrial
                 $this->_fail();
                 $failures->push($e);
             }
-            // @TODO hook some processes
+            $this->after();
             if ($this->isSucceeded()) {
                 break;
             }
         }
-        // @TODO hook some processes
+        $this->finalize();
         if ($this->isSucceeded()) {
             return $result;
         }
@@ -94,5 +94,21 @@ abstract class Retrial
     protected function process()
     {
         throw new ErrorException('Retrial#process must be implemented.');
+    }
+
+    protected function initialize()
+    {
+    }
+
+    protected function finalize()
+    {
+    }
+
+    protected function before()
+    {
+    }
+
+    protected function after()
+    {
     }
 }
