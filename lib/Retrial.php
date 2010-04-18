@@ -29,6 +29,7 @@ abstract class Retrial
                 $this->_fail();
                 $failures->push($e);
             }
+            // @TODO catch the other exceptions and call after() and finalize().
             $this->after();
             if ($this->isSucceeded()) {
                 break;
