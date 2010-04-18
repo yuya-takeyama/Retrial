@@ -5,8 +5,6 @@ require_once 'Retrial/FailureAllException.php';
 
 abstract class Retrial
 {
-    protected $_result;
-
     protected $_maxTrial = 1;
 
     private $_trialCount;
