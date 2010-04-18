@@ -9,13 +9,18 @@ abstract class Retrial
 
     protected $_maxTrial = 1;
 
+    private $_trialCount;
+
+    private $_sleepTime = 0;
+
     public function execute()
     {
         $failures = new Retrial_Failures;
         $args = func_get_args();
-        for ($i = 0; $i < $this->_maxTrial; $i++)
+        for ($this->_trialCount = 1; $this->_trialCount <= $this->_maxTrial; $this->_trialCount++)
         {
             try {
+                $this->_sleep();
                 $result = call_user_func_array(array($this, 'process'), $args);
                 return $result;
             } catch (Retrial_FailureException $e) {
@@ -31,6 +36,19 @@ abstract class Retrial
     {
         $this->_maxTrial = $max;
         return $this;
+    }
+
+    public function setSleepTime($sec = 0)
+    {
+        $this->_sleepTime = (int) $sec;
+        return $this;
+    }
+
+    private function _sleep()
+    {
+        if ($this->_trialCount > 1 && $this->_sleepTime > 0) {
+            sleep($this->_sleepTime);
+        }
     }
 
     protected function process()

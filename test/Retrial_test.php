@@ -44,4 +44,18 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($retrial->execute('/bar/', 'foobarbaz'));
         $this->assertFalse($retrial->execute('/hoge/', 'foobarbaz'));
     }
+
+    public function testSleep()
+    {
+        $sleepTime = 1;
+        $maxTrial  = 3;
+        $retrial = new NullRetrial;
+        $retrial->setMaxTrial($maxTrial)->setSleepTime($sleepTime);
+        $before = microtime(true);
+        try {
+            $retrial->execute();
+        } catch (Retrial_FailureAllException $e) {}
+        $after = microtime(true);
+        $this->assertEquals($sleepTime * ($maxTrial - 1), $after - $before, '', 0.1);
+    }
 }
