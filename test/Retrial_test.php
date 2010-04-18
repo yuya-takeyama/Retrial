@@ -8,7 +8,7 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
     public function testSuccess()
     {
         $retrial = new NullRetrial();
-        $this->assertTrue($retrial->setRetrialCount(100)->execute());
+        $this->assertTrue($retrial->setMaxTrial(100)->execute());
     }
 
     /**
@@ -17,14 +17,14 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
     public function testFail()
     {
         $retrial = new NullRetrial;
-        $retrial->setRetrialCount(99)->execute();
+        $retrial->setMaxTrial(99)->execute();
     }
 
     public function testRetrial_FailureAllException()
     {
         $retrial = new NullRetrial;
         try {
-            $retrial->setRetrialCount(50)->execute();
+            $retrial->setMaxTrial(50)->execute();
         } catch (Retrial_FailureAllException $e) {
             $failures = $e->getFailures();
             $failuresArray = $failures->getAll();
