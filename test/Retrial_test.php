@@ -58,4 +58,21 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
         $after = microtime(true);
         $this->assertEquals($sleepTime * ($maxTrial - 1), $after - $before, '', 0.1);
     }
+
+    public function testInvalidUsingOfFailedFlag()
+    {
+        $retrial = new NullRetrial;
+        try {
+            $retrial->isSucceeded();
+        } catch (ErrorException $e) {
+            $this->assertEquals($e->getMessage(), 'Invalid using of Retrial::isSucceeded.');
+            try {
+                $retrial->isFailed();
+            } catch (ErrorException $e) {
+                $this->assertEquals($e->getMessage(), 'Invalid using of Retrial::isFailed.');
+                return;
+            }
+        }
+        $this->fail();
+    }
 }
