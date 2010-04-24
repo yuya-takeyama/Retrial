@@ -18,7 +18,7 @@ abstract class Retrial
         $failures = new Retrial_Failures;
         $args = func_get_args();
         $this->initialize();
-        for ($this->_trialCount = 1; $this->_trialCount <= $this->_maxTrial; $this->_trialCount++)
+        for ($this->_trialCount = 1; $this->getTrialCount() <= $this->_maxTrial; $this->_trialCount++)
         {
             $this->before();
             try {
@@ -70,7 +70,7 @@ abstract class Retrial
 
     private function _sleep()
     {
-        if ($this->_trialCount > 1 && $this->_sleepTime > 0) {
+        if ($this->getTrialCount() > 1 && $this->_sleepTime > 0) {
             sleep($this->_sleepTime);
         }
     }
