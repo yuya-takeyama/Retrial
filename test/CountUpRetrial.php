@@ -6,9 +6,12 @@ class CountUpRetrial extends Retrial
 {
     private $_str;
 
-    public function process()
+    public function process($killWhen = NULL)
     {
         $this->_str .= $this->getTrialCount();
+        if (is_int($killWhen) && $killWhen === $this->getTrialCount()) {
+            throw new RuntimeException('Killed.');
+        }
         if ($this->getTrialCount() < 5) {
             throw new Retrial_FailureException($this->getTrialCount() . ' is smaller than 5.');
         } else {

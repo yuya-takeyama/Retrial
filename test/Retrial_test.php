@@ -84,4 +84,16 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($c->execute());
         $this->assertEquals($c->getStr(), 'ib1ab2ab3ab4ab5af');
     }
+
+    public function testProcessOrderWithUnknownException()
+    {
+        $c = new CountUpRetrial();
+        $c->setMaxTrial(5);
+        try {
+            $this->assertTrue($c->execute(3)); // This process will be killed in 3rd trial.
+        } catch (RuntimeException $e) {
+            $this->assertEquals($e->getMessage(), 'Killed.');
+        }
+        $this->assertEquals($c->getStr(), 'ib1ab2ab3af');
+    }
 }
