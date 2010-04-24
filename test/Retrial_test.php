@@ -2,6 +2,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'NullRetrial.php';
 require_once 'RegExpRetrial.php';
+require_once 'CountUpRetrial.php';
 
 class ExceptionTest extends PHPUnit_Framework_TestCase
 {
@@ -74,5 +75,13 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
             }
         }
         $this->fail();
+    }
+
+    public function testProcessOrder()
+    {
+        $c = new CountUpRetrial();
+        $c->setMaxTrial(5);
+        $this->assertTrue($c->execute());
+        $this->assertEquals($c->getStr(), 'ib1ab2ab3ab4ab5af');
     }
 }
