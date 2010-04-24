@@ -92,6 +92,11 @@ abstract class Retrial
         }
     }
 
+    protected function getTrialCount()
+    {
+        return $this->_trialCount;
+    }
+
     protected function process()
     {
         throw new ErrorException('Retrial#process must be implemented.');

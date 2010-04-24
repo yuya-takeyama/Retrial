@@ -4,8 +4,6 @@ require_once 'Retrial.php';
 
 class NullRetrial extends Retrial
 {
-    private $_count = 0;
-
     private $_fooFlag;
 
     private $_fooCounter = 0;
@@ -13,14 +11,13 @@ class NullRetrial extends Retrial
     private $_barCounter = 0;
 
     /**
-     * This method throws Retrial_FailureException while $this->_count is smaller than 100.
+     * This method throws Retrial_FailureException while $this->getTrialCount() is smaller than 100.
      * If the count is greater than or equals to 100, returns true.
      */
     public function process()
     {
-        $this->_count += 1;
-        if ($this->_count < 100) {
-            throw new Retrial_FailureException($this->_count . ' is smaller than 100.');
+        if ($this->getTrialCount() < 100) {
+            throw new Retrial_FailureException($this->getTrialCount() . ' is smaller than 100.');
         }
         return true;
     }
