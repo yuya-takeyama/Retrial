@@ -4,7 +4,7 @@ require_once 'NullRetrial.php';
 require_once 'RegExpRetrial.php';
 require_once 'CountUpRetrial.php';
 
-class ExceptionTest extends PHPUnit_Framework_TestCase
+class RetrialTest extends PHPUnit_Framework_TestCase
 {
     public function testSuccess()
     {
