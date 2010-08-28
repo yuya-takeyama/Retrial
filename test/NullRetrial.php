@@ -1,6 +1,5 @@
 <?php
-set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-require_once 'Retrial.php';
+require_once dirname(__FILE__) . '/../lib/Retrial.php';
 
 class NullRetrial extends Retrial
 {

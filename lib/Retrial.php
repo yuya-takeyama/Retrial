@@ -1,7 +1,7 @@
 <?php
-require_once 'Retrial/Failures.php';
-require_once 'Retrial/FailureException.php';
-require_once 'Retrial/FailureAllException.php';
+require_once dirname(__FILE__) . '/Retrial/Failures.php';
+require_once dirname(__FILE__) . '/Retrial/FailureException.php';
+require_once dirname(__FILE__) . '/Retrial/FailureAllException.php';
 
 abstract class Retrial
 {
